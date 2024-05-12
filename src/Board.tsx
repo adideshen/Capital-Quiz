@@ -37,7 +37,6 @@ export const Board = ({ data }) => {
     setCountryCapital(dataArray);
   }, []);
 
-  // updating the buttons after
   useEffect(() => {
     const changedButtons = [];
     countryCapital.forEach((item) => {
