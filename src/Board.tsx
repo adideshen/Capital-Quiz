@@ -28,7 +28,6 @@ export const Board = ({ data }) => {
   const [disableAllButtons, setDisableAllButtons] = useState(false);
   const [gameFinished, setGameFinished] = useState(false);
 
-  // called only on the first render
   useEffect(() => {
     const dataMap = new Map();
     data.forEach((item) => {
