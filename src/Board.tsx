@@ -1,6 +1,5 @@
 // @ts-nocheck
 import { useEffect, useState } from "react";
-// import { Button } from "./Button";
 import "./Board.css";
 
 interface buttonItem {
@@ -9,7 +8,7 @@ interface buttonItem {
   state: string;
 }
 
-function buttonColor(state) {
+function buttonColor(state: any) {
   if (state === "active") {
     return "blue";
   } else if (state === "error") {
@@ -39,7 +38,7 @@ export const Board = ({ data }) => {
     setCountryCapital(dataArray);
   }, []);
 
-  // called everytime the countryCapital is changed
+  // updating the buttons after
   useEffect(() => {
     const changedButtons = [];
     countryCapital.forEach((item) => {
@@ -67,8 +66,8 @@ export const Board = ({ data }) => {
   }
 
   function handleClick(clickedButton) {
-    // clicking first button
     if (chosenButtons.length === 0) {
+      // clicking first button
       let activeButton = clickedButton;
       activeButton.state = "active";
       setChosneButtons([clickedButton]);
@@ -76,14 +75,14 @@ export const Board = ({ data }) => {
     }
 
     if (chosenButtons.length === 1) {
-      // unclicking a button
       if (chosenButtons[0].text === clickedButton.text) {
+        // unclicking a button
         let unActiveButton = clickedButton;
         unActiveButton.state = "default";
         setChosneButtons([]);
         return;
       } else if (chosenButtons[0].match == clickedButton.text) {
-        // choosing the match
+        // choosing the matched button
         setButtons(
           buttons.filter(
             (item) =>
@@ -93,6 +92,7 @@ export const Board = ({ data }) => {
         );
         setChosneButtons([]);
       } else {
+        // not choosing the matched button
         let errorButton = clickedButton;
         errorButton.state = "error";
         let chosenButton = chosenButtons[0];
@@ -131,80 +131,3 @@ export const Board = ({ data }) => {
     </div>
   );
 };
-
-// import { useState } from "react";
-// import { Button } from "./Button";
-// import "./Board.css";
-
-// function shuffle(array: any) {
-//   return array.sort(() => Math.random() - 0.5);
-// }
-
-// export const Board = () => {
-//   const countryCapital = new Map<String, String>([
-//     ["Israel", "Jerusalem"],
-//     ["France", "Paris"],
-//     ["England", "London"],
-//     ["Italy", "Rome"],
-//     ["Spain", "Madrid"],
-//   ]);
-
-//   const [countries, setCountries] = useState(() =>
-//     shuffle(Array.from(countryCapital.keys()))
-//   ); //to change?
-//   const [capitals, setCapitals] = useState(() =>
-//     shuffle(Array.from(countryCapital.values()))
-//   ); //to change?
-
-//   const [chosenButton, setChosneButton] = useState("");
-
-//   function handleChosneButton(buttonName: any) {
-//     if (chosenButton == "") {
-//       setChosneButton(buttonName);
-//     } else {
-//       if (
-//         countryCapital.get(chosenButton) == buttonName ||
-//         countryCapital.get(buttonName) == chosenButton
-//       ) {
-//         console.log("congratulations");
-//         setChosneButton("");
-//       }
-//     }
-//   }
-
-//   const renderCountries = (countries: any) => {
-//     return (
-//       <div className="countries">
-//         {countries.map((country: any) => (
-//           <Button
-//             key={country}
-//             name={country}
-//             sendDataToParent={handleChosneButton}
-//           />
-//         ))}
-//       </div>
-//     );
-//   };
-
-//   const renderCapitals = (capitals: any) => {
-//     return (
-//       <div className="capitals">
-//         {capitals.map((capital: any) => (
-//           <Button
-//             key={capital}
-//             name={capital}
-//             state={"default"}
-//             sendDataToParent={handleChosneButton}
-//           />
-//         ))}
-//       </div>
-//     );
-//   };
-
-//   return (
-//     <div className="board">
-//       {renderCountries(countries)}
-//       {renderCapitals(capitals)}
-//     </div>
-//   );
-// };
