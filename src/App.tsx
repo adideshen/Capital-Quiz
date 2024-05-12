@@ -1,23 +1,20 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+// @ts-nocheck
+import "./App.css";
+import { Board } from "./Board";
+
+const data = [
+  {country: "Israel" , capital: "Jerusalem"},
+  {country: "France", capital: "Paris"},
+  {country: "England", capital: "London"},
+  {country: "Italy", capital: "Rome"},
+  {country: "Spain", capital: "Madrid"},
+]
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <Board data={data}></Board>
       </header>
     </div>
   );
