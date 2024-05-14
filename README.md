@@ -37,4 +37,6 @@ Welcome to Capital Quiz, an interactive React game designed to test and enhance 
 
 Contributions are welcome! If you have any ideas for improvements or new features, feel free to reach out - adideshen@gmail.com.
 
+## Join the Fun!
+
 What are you waiting for? Let's get started and embark on an exciting journey of discovery with Capital Quiz, where learning meets entertainment. Challenge yourself, compete with friends, and become a geography master as you explore the fascinating world of world capitals!
