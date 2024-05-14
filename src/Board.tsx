@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useEffect, useState } from "react";
 import "./Board.css";
 
@@ -8,7 +7,7 @@ interface buttonItem {
   state: string;
 }
 
-function buttonColor(state: any) {
+function buttonColor(state: string): string {
   if (state === "active") {
     return "blue";
   } else if (state === "error") {
@@ -17,16 +16,22 @@ function buttonColor(state: any) {
   return "lightgrey";
 }
 
-function shuffle(array: any) {
+function shuffle(array: any[]): any[] {
   return array.sort(() => Math.random() - 0.5);
 }
 
-export const Board = ({ data }) => {
-  const [countryCapital, setCountryCapital] = useState([]);
-  const [buttons, setButtons] = useState(new Array());
-  const [chosenButtons, setChosneButtons] = useState([]);
-  const [disableAllButtons, setDisableAllButtons] = useState(false);
-  const [gameFinished, setGameFinished] = useState(false);
+export const Board = ({
+  data,
+}: {
+  data: { country: string; capital: string }[];
+}) => {
+  const [countryCapital, setCountryCapital] = useState<
+    { key: string; value: string }[]
+  >([]);
+  const [buttons, setButtons] = useState<buttonItem[]>([]);
+  const [chosenButtons, setChosenButtons] = useState<buttonItem[]>([]);
+  const [disableAllButtons, setDisableAllButtons] = useState<boolean>(false);
+  const [gameFinished, setGameFinished] = useState<boolean>(false);
 
   useEffect(() => {
     const dataMap = new Map();
@@ -38,7 +43,7 @@ export const Board = ({ data }) => {
   }, []);
 
   useEffect(() => {
-    const changedButtons = [];
+    const changedButtons: buttonItem[] = [];
     countryCapital.forEach((item) => {
       changedButtons.push({
         text: item.key,
@@ -54,21 +59,22 @@ export const Board = ({ data }) => {
     setButtons(shuffle(changedButtons));
   }, [countryCapital]);
 
-  function disableButtons(button1, button2) {
+  function disableButtons(button1: buttonItem, button2: buttonItem) {
     setDisableAllButtons(true);
     setTimeout(function () {
       setDisableAllButtons(false);
       button1.state = "default";
       button2.state = "default";
+      setChosenButtons([]);
     }, 3000);
   }
 
-  function handleClick(clickedButton) {
+  function handleClick(clickedButton: buttonItem) {
     if (chosenButtons.length === 0) {
       // clicking first button
       let activeButton = clickedButton;
       activeButton.state = "active";
-      setChosneButtons([clickedButton]);
+      setChosenButtons([clickedButton]);
       return;
     }
 
@@ -77,10 +83,10 @@ export const Board = ({ data }) => {
         // unclicking a button
         let unActiveButton = clickedButton;
         unActiveButton.state = "default";
-        setChosneButtons([]);
+        setChosenButtons([]);
         return;
       } else if (chosenButtons[0].match == clickedButton.text) {
-        // choosing the matched button
+        // choosing the matching button
         setButtons(
           buttons.filter(
             (item) =>
@@ -88,26 +94,20 @@ export const Board = ({ data }) => {
               item.match !== clickedButton.text
           )
         );
-        setChosneButtons([]);
+        setChosenButtons([]);
       } else {
-        // not choosing the matched button
-        let errorButton = clickedButton;
-        errorButton.state = "error";
-        let chosenButton = chosenButtons[0];
-        chosenButton.state = "error";
-        setChosneButtons([errorButton, chosenButton]);
+        // not choosing the matching button
+        let firstButton = chosenButtons[0];
+        firstButton.state = "error";
+        let secondButton = clickedButton;
+        secondButton.state = "error";
+        setChosenButtons([firstButton, secondButton]);
         disableButtons(clickedButton, chosenButtons[0]);
       }
-    } else {
-      chosenButtons.forEach((item) => {
-        item.state = "default";
-      });
-      let activeButton = clickedButton;
-      activeButton.state = "active";
-      setChosneButtons([activeButton]);
     }
 
     if (buttons.length === 2) {
+      // The last click selected the last matching pair
       setGameFinished(true);
     }
   }
@@ -116,7 +116,7 @@ export const Board = ({ data }) => {
     <div>
       {buttons.map((item) => (
         <button
-          key={item.key}
+          key={item.text}
           className={"button " + item.state.toString()}
           onClick={() => handleClick(item)}
           style={{ backgroundColor: buttonColor(item.state) }}
